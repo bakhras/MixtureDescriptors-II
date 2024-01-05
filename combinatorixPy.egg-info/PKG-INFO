@@ -1,0 +1,21 @@
+Metadata-Version: 2.1
+Name: combinatorixPy
+Version: 1.0.0
+Summary: Development of Numerical Features/Descriptors to Describe Complex Materials for Machine Learning Modeling
+Home-page: https://github.com/Rahil-mahini/combinatorial
+Author: Rahil Ashtari
+Author-email: Rahil.Ashtarimahini@ndsu.edu
+License:  GPL-3.0
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: SCIENCE/RESEARCH
+Classifier: Topic :: CIENTIFIC/ENGINEERING :: CHEMISTRY
+Classifier: License :: OSI Approved :: GNU General Public License, version 3 
+Classifier: Programming Language :: Python :: 3.10
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENCE
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: dask.array
+Requires-Dist: dask.dataframe
+Requires-Dist: dask.distributed
