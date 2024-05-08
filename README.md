@@ -1,5 +1,5 @@
-# Mixture_Descriptors
-This is a project which takes input from two .csv files, first one containing individual descriptors of each components and the second one containing the concentrations values of of each components for each mixtures.
-The main function gets threee arguments  1- descriptors file path 2- concentrations file path and 3- output directory (to store a .csv output files) 4- threshold for filtering constant, 5-threshold for filtering pair column correlation ,  and 6- batch_size for calculating pair columns correlation
-This code calculates  combinatorila mixture descriptors and return one .csv file . 
-install the package using conda install  combinatorial  or pip install combinatorial
+# combinatorixPy
+
+This project develops a combinatorial scheme to generate mixture descriptors for multi-component materials. The algorithm takes input from two .csv files, first one containing individual descriptors of each component and the second one containing the mole fraction values of each component of each mixtures. The main function "get_result" gets five arguments 1- descriptors file path 2- mole fraction file path and 3- output directory (to store the a .csv output file) 4- threshold for filtering constants and nearly constant, 5- threshold for filtering highly correlated pair columns,  and 6- batch number for calculating highly correlated pair columns.
+
+ This code computes combinatorila mixture descriptors based on cartesian power which is cartesian product of N-copies of a single set of descriptors, while N is the number of components. To install the package, begin by downloading the ZIP file from the GitHub repository and extracting its contents. Then, navigate to the extracted directory using the command line interface. Once in the directory containing the package files, install it using "pip install ." . After successful installation, you can import and utilize the package's functions in your Python code using " from combinatorixPy import get_result”

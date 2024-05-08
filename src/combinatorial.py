@@ -22,7 +22,7 @@ def load_descriptors_data(descriptors_file_path):
     
     try:
         # Load data from the CSV file which exclude the header as pandas dataframe
-        df = pd.read_csv(descriptors_file_path, sep=','  )  # , skiprows=1
+        df = pd.read_csv(descriptors_file_path, sep=','  )  
         
         # exclude the first column and first row
         df = df.iloc[:, 1:]
@@ -275,7 +275,7 @@ def generate_combinatorial(descriptors_file_path, concentrations_file_path):
    
    mix_descriptors = np.power (num_descriptors, num_components ) 
    
-   # you can change the chunksize  from 1e5 to 1e8 depending on datasets output and resourses,  1000000
+   # you can change the chunksize  from 1e5 to 1e8 depending on datasets output and resourses
    chunk_desc =   int (mix_descriptors / (num_components * num_components)  )
    chunk_comp = num_components
    product_chunk = (chunk_desc, chunk_comp) 
@@ -496,7 +496,7 @@ def write_to_csv(table_arr, output_path):
     print ("table_arr  type: ", type(table_arr))   
     print ("table_arr shape : ", table_arr.shape) 
     
-    # Convert the numpy array to pandas dataframe if you have GPU comment these two line of code and use the next code that convert numpy array to cudf dataframe instead
+    # Convert the numpy array to pandas dataframe
     table_df = pd.DataFrame(table_arr)
     
     # Reset the index
@@ -702,45 +702,3 @@ def filter_high_corr_bychunck(combinatorial_descriptors_arr, threshold, batch_nu
      
     return matrix_high_corr
 
-
-
-if __name__ == '__main__':  
-     
-    #Create Lucalluster with specification for each dask worker to create dask scheduler     
-    cluster = LocalCluster( n_workers= 3,  threads_per_worker= 128, memory_limit='500GB',  timeout= 3000  )
-    
-    #Create the Client using the cluster
-    client = Client(cluster)  
-   
-    descriptors_file_path = r'Descriptors_a67kpa.csv'
-    concentrations_file_path = r'Components.csv'
-    output_path = r'a67kpa_filterted'
-    
-    # Define thresholds for column variation, and correlation
-    threshold_const = 0.01
-    threshold_corr = 0.95
-    batch_num = 1000
-    
-    result_path = get_result(descriptors_file_path, concentrations_file_path, output_path, threshold_const, threshold_corr, batch_num)
-    print  ("result path", result_path)      
-   
-    scheduler_address = client.scheduler.address
-    print("Scheduler Address:", scheduler_address)
-    print(cluster.workers)
-    print(cluster.scheduler)
-    print(cluster.dashboard_link)
-    print(cluster.status)   
-    
-    
-    logs = cluster.get_logs()
-    print('logs' , logs)
-    
-    # Get address of node 1 scheduler
-    addr = cluster.scheduler_address
-    print('Address' , addr)
-    
-    # On each additional node
-    worker = Worker(addr)
-    
-    client.close()
-    cluster.close()
