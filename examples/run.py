@@ -1,5 +1,5 @@
 # run.py
-from  combinatorial import get_result
+from  combinatorixPy import get_result
 from dask.distributed import Client, LocalCluster, Worker
 
 
