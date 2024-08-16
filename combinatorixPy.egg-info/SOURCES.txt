@@ -1,8 +1,0 @@
-LICENCE
-README.md
-setup.py
-combinatorixPy.egg-info/PKG-INFO
-combinatorixPy.egg-info/SOURCES.txt
-combinatorixPy.egg-info/dependency_links.txt
-combinatorixPy.egg-info/requires.txt
-combinatorixPy.egg-info/top_level.txt
