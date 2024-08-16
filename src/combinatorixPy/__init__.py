@@ -1,1 +1,1 @@
-from .combinatorix import mixture_descriptors_to_csv
+from .combinatorixPy import mixture_descriptors_to_csv
