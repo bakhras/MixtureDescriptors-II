@@ -33,9 +33,9 @@ setup(
         # They will be installed by pip when your project is installed.
         'numpy', 
         'pandas',
-        'dask.array',
-        'dask.dataframe',
-        'dask.distributed',
+        'dask[array]',
+        'dask[dataframe]',
+        'dask[distributed]'
     ],
 
     extras_requires={
