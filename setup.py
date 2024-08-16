@@ -1,12 +1,15 @@
 
 from setuptools import setup, find_packages
 
+with open ('README.md', 'r' )   as f:
+    desscription = f.read()
 
 setup(
     name='combinatorixPy',
     version='1.0.0',
     packages=find_packages( where = "src"),
     description='Development of Numerical Features/Descriptors to Describe Complex Materials for Machine Learning Modeling',
+    long_description= desscription,
     long_description_content_type='text/markdown',
     author='Rahel Mahini',
     author_email='Rahil.Ashtarimahini@ndsu.edu',
@@ -39,7 +42,6 @@ setup(
         "dev":["twine>=4.0.2"]
         }
 
-    
 )
 
 
