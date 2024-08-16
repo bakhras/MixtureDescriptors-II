@@ -8,7 +8,7 @@ setup(
     packages=find_packages( where = "src"),
     description='Development of Numerical Features/Descriptors to Describe Complex Materials for Machine Learning Modeling',
     long_description_content_type='text/markdown',
-    author='Rahl Mahini',
+    author='Rahel Mahini',
     author_email='Rahil.Ashtarimahini@ndsu.edu',
     url='https://github.com/Rahil-mahini/combinatorial',
     license = " GPL-3.0",
