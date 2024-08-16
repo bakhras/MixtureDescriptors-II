@@ -26,12 +26,9 @@ def load_descriptors_data(descriptors_file_path):
         
         # exclude the first column and first row
         df = df.iloc[:, 1:]
-        print ( "descriptors dataframe shape ", df.shape)
         
         # Convert  dataframe to  array
-        descriptors  = df.values
-        print("descriptors type ", type(descriptors))  
-        print("descriptors size ", descriptors.size)     
+        descriptors  = df.values  
         
         return descriptors
 
@@ -47,14 +44,9 @@ def load_concentrations_data( concentrations_file_path):
         
         # exclude the first column 
         df = df.iloc[:, 1:]
-        
-        # print("concentrations ", df)
-        print ( "concentrations dataframe shape ", df.shape)      
-        
+ 
         # Convert DataFrame to  array 
-        concentrations = df.values
-        print("concentrations type ", type(concentrations))   
-        print("concentrations shape ", concentrations.shape)  
+        concentrations = df.values 
       
         return  concentrations
 
@@ -70,13 +62,9 @@ def generate_descriptors_based_nonzero_component(descriptors_file_path, concentr
     num_descriptors = get_num_descritors(descriptors_file_path)
    
     descriptors = load_descriptors_data (descriptors_file_path)
-    concentrations = load_concentrations_data( concentrations_file_path)
-    
-    print("descriptors type ", descriptors.shape)   
-    print("concentrations shape ", concentrations.shape)
+    concentrations = load_concentrations_data( concentrations_file_path)  
     
     mask = concentrations!= 0
-    print("mask shape ", mask.shape)
     
     descriptors_based_nonzero_component = [descriptors [mask_row].tolist() for mask_row in mask]
     descriptors_based_nonzero_component  = np.array (descriptors_based_nonzero_component , dtype= object)
@@ -89,7 +77,7 @@ def generate_descriptors_based_nonzero_component(descriptors_file_path, concentr
     descriptors_based_nonzero_component_fixed_length = np.array(descriptors_based_nonzero_component_fixed_length)
     
     descriptors_based_nonzero_component_fixed_length = np.reshape(descriptors_based_nonzero_component_fixed_length ,(num_mixtures, num_components, num_descriptors ))   
-    print("descriptors_based_nonzero_component_fixed_length shape :  ", descriptors_based_nonzero_component_fixed_length.shape) 
+
     
     # Convert array to Dask array 
     descriptors_da = da.from_array(descriptors_based_nonzero_component_fixed_length, chunks="auto")
@@ -108,11 +96,10 @@ def generate_nonzero_concentrations (concentrations_file_path):
         
         # Use list comprehensions to extract nonzero elements for each column
         nonzero_concentrations = [[val for val in row if val != 0] for row in df.values]
-        print ( "nonzero_concentrations  ", nonzero_concentrations)
+       
         
         nonzero_concentrations = np.array(nonzero_concentrations, dtype= object)
         
-        print ( "nonzero_concentrations numpy array  ", nonzero_concentrations)
         
         # Find the maximum length of arrays
         max_len = max(len(arr) for arr in nonzero_concentrations)
@@ -120,21 +107,17 @@ def generate_nonzero_concentrations (concentrations_file_path):
         #Convert ragged array to fixed length arrya by adding zero to smaller subarrays 
         none_zero_concentrations_fixed_length = [np.pad(arr, (0, max_len - len(arr)), mode='constant') for arr in nonzero_concentrations]
         
-        print ( "none_zero_concentrations_fixed_length  ", none_zero_concentrations_fixed_length)
+
         
         none_zero_concentrations_fixed_length = np.array(none_zero_concentrations_fixed_length)
-        print ( "none_zero_concentrations_fixed_length numpy array  ", none_zero_concentrations_fixed_length)
-        print("none_zero_concentrations_fixed_length numpy array shape :  ", none_zero_concentrations_fixed_length.shape) 
+
         
         none_zero_concentrations_fixed_length =  np.reshape ( none_zero_concentrations_fixed_length, (num_mixtures, 1, num_components))      
-            
-        print ( "nonzero_concentrations with zero padded  ", nonzero_concentrations)         
-        print("none_zero_concentrations_fixed_length shape :  ", none_zero_concentrations_fixed_length.shape)    
+              
     
         # Convert array to Dask array 
         concentration_da = da.from_array(none_zero_concentrations_fixed_length, chunks= "auto")
-        print("concentration_da type ", type(concentration_da))   
-        print("concentration_da shape ", concentration_da.shape)      
+   
       
         return  concentration_da
 
@@ -166,8 +149,6 @@ def get_descriptor_header(descriptors_file_path, concentrations_file_path ):
         
         # Convert numpy array to lazy dask array
         header_descriptor_da = da.from_array(header_descriptor, chunks= "auto") 
-        print("header_descriptor_da type ", type(header_descriptor_da))                        
-        print("header_descriptor_da shape " , header_descriptor_da.shape)  
         
         
         return header_descriptor_da
@@ -183,7 +164,6 @@ def get_first_column ( concentrations_file_path):
         # Load data from the second CSV file as pandas dataframe
         df = pd.read_csv(concentrations_file_path, sep=',' ,encoding='latin-1' )   
         
-        print("concentrations df content  ", df)
         
         # store mixture name column as pandas series
         first_column_mixture = df.iloc[:, 0]
@@ -192,7 +172,6 @@ def get_first_column ( concentrations_file_path):
         first_column_mixture_ndarray = first_column_mixture.values
     
         num_mixture = df.shape[0]     
-        print("mixture_name before adding first slot shape ", num_mixture)
  
         # reshape first_column_mixture_ndarray from (num_mixtures, ) to (num_mixtures, 1)    
         column_mixtures_reshape = np.reshape(first_column_mixture_ndarray, (num_mixture, 1))
@@ -202,7 +181,6 @@ def get_first_column ( concentrations_file_path):
           
         # Resahpe the mixture_name
         mixture_name = column_mixtures_reshape.reshape(1, -1) 
-        print("mixture_name after adding first slot shape ", mixture_name.shape) # (19, )
         
         return mixture_name
     
@@ -219,7 +197,6 @@ def get_num_mixtures(concentrations_file_path):
         num_mixtutes = df.shape[0]
         
         print("num_mixtutes", num_mixtutes)
-        print("num_mixtutes type " , type(num_mixtutes))   
         
         return num_mixtutes
     
@@ -236,14 +213,12 @@ def get_num_components(concentrations_file_path):
     
     # Use list comprehensions to extract nonzero elements for each column
     nonzero_concentrations = [[val for val in row if val != 0] for row in df.values]
-    print ( "nonzero_concentrations  ", nonzero_concentrations)
     
     nonzero_concentrations = np.array(nonzero_concentrations, dtype=object)
     
     # Find the maximum length of arrays
     max_len = max(len(arr) for arr in nonzero_concentrations)
-    print(  "num_components" , max_len) 
-    print("num_components type " , type(max_len))                              
+                            
     
     return max_len
 
@@ -253,8 +228,8 @@ def get_num_descritors(descriptors_file_path):
     
     descriptors = load_descriptors_data(descriptors_file_path)
     num_descriptors = descriptors.shape[1]
-    print("num_descriptors type " , type(num_descriptors))
-    print("num_descriptors  " , num_descriptors)      
+    print("num_descriptors  " , num_descriptors)   
+
     return num_descriptors
 
 
@@ -266,7 +241,6 @@ def generate_combinatorial(descriptors_file_path, concentrations_file_path):
    
    # load lazy concentrations to memory
    concentrations = generate_nonzero_concentrations (concentrations_file_path)
-   # print ("concentrations shape  ", concentrations.compute().shape)   
    
    num_components = get_num_components (concentrations_file_path)    
    num_mixtures = get_num_mixtures(concentrations_file_path)
@@ -283,20 +257,15 @@ def generate_combinatorial(descriptors_file_path, concentrations_file_path):
                            
    def cartesian_product(array):
        
-       print("array of cartesian_product type ", type(array))
        array = array.astype(float)
        
        def product_mapper(x):
           
            prod = np.array(list(itertools.product(*x)))
-           print("prod shape ", prod.shape) 
            
            return prod
        
        cartesian_product_dask = da.map_blocks(product_mapper, array, dtype= object, chunks= product_chunk)      
-       print("cartesian_product_dask_func type ", type(cartesian_product_dask.shape))
-       print ("cartesian_product_dask_func chunk:  ", cartesian_product_dask.chunks) 
-       print("cartesian_product_dask_func elements  type: ", cartesian_product_dask.dtype) 
               
        return cartesian_product_dask
     
@@ -306,20 +275,9 @@ def generate_combinatorial(descriptors_file_path, concentrations_file_path):
    
    # Return the combinarorial mixture descriptors of two array
    def combinatorial_descriptor(x, y):
-       
-        print("x of combinatorial_descriptor type ", type(x))
-        print("y of combinatorial_descriptor type ", type(y))
-        
-        print("x combinatorial shape:", len(x) )
-        print("y combinatorial shape:", len(y))
-        
+           
                 
         def combine_mapper(x, y):
-            
-            print("x of combine_mapper type ", type(x))
-            print("y of combine_mapper type ", type(y))
-            print("x of combine_mapper length ", len(x))
-            print("y of combine_mapper shape ", y.shape)
             
             y = y.astype(float)
  
@@ -332,24 +290,17 @@ def generate_combinatorial(descriptors_file_path, concentrations_file_path):
                 result_list.append(result)
                 
                 
-            print("result_list dot length ", len (result_list))
             final_result = np.array(result_list)
-            print("final_result dot shape ", final_result.shape)  # ( 18, 27000000, 1 )
              
             
-            final_result = np.transpose(final_result ,  (0, 2, 1) ) #  ( 18, 1,  27000000 )
-            print("final_result dot shape ", final_result.shape)
+            final_result = np.transpose(final_result ,  (0, 2, 1) ) 
             
            
             return final_result
         
         # Map combine_mapper function blockwise
         combinatorial_da = da.map_blocks( combine_mapper, x, y, chunks= combinatorial_chunk, dtype= float )
-        
-        # print("combinatorial_da_func shape ", combinatorial_da.compute().shape)
-        print("combinatorial_da_func type ", type(combinatorial_da)) 
-        print ("combinatorial_da_func chunk:  ", combinatorial_da.chunks) 
-        print("combinatorial_da_func elements  type: ", combinatorial_da.dtype)                            
+                                   
         
         return combinatorial_da
         
@@ -357,49 +308,33 @@ def generate_combinatorial(descriptors_file_path, concentrations_file_path):
                                                     
    # Call the cartesian product function 
    cartesian_descriptors = [cartesian_product(subarray) for subarray in descriptors]
-   print("cartesian_descriptors type ", type(cartesian_descriptors))  # <class 'list'>
-   print ("cartesian_descriptors shape ", len(cartesian_descriptors))
+
    
 
-  
-   print(f"Cluster Dashboard URL: {cluster.dashboard_link}")
-   print("Cluster Status:")
-   print(client)
-       
+
    client.cluster.scale(20)
-       
-   print(f"Cluster Dashboard URL: {cluster.dashboard_link}")
-   print("Cluster Status:")
-   print(client)
-   
+         
    sleep(5)
-   
-   
+     
    
    # Scatter the large cartesian product list array
    cartesian_future = client.scatter(cartesian_descriptors)
-   print("cartesian_future type ", type(cartesian_future)) 
+ 
      
    
    # Submit the concentration dask array to cluster 
    concentrations_future = client.submit (lambda x : x , concentrations)
-   print("concentrations_future type ", type(concentrations_future))
    
    
     # Call combinatorial_descriptor (dot product) to cartesian_future and concentrations_future distributedely 
    combinatorial_future = client.submit( combinatorial_descriptor, cartesian_future, concentrations_future) 
-   print("combinatorial_future type ", type(combinatorial_future))  
    
   
    result = client.gather(combinatorial_future)   
-   print("result gather 1  type", type(result))   
-   print ("result gather 1  shape", result.shape)  # (18, 1, 333333)
    
    
    result = result.compute()
-   print ("result   compute type: ", type(result))  
-   print ("result  compute: ", result.shape)
-   
+
    
    return result
 
@@ -426,14 +361,11 @@ def combinatorial_header(descriptors_file_path, concentrations_file_path):
           def product_mapper(x):
               
              prod = np.array(list(itertools.product(*x)), dtype = object)
-             print ("prod shape", prod.shape)
+          
              return prod
           
           cartesian_product_dask = da.map_blocks(product_mapper, array, dtype = object, chunks= product_chunk)
-          print ("cartesian_product_dask  shape: ", cartesian_product_dask.compute().shape)
-          print ("cartesian_product_dask chunk:  ", cartesian_product_dask.chunks) 
-          print("cartesian_product_dask  type: ", type(cartesian_product_dask)) 
-          print("cartesian_product_dask elements  type: ", cartesian_product_dask.dtype)
+
           
           return cartesian_product_dask
             
@@ -442,20 +374,15 @@ def combinatorial_header(descriptors_file_path, concentrations_file_path):
       def join_elements(cartesians):
           
           def join_mapper(x):
-               # join = np.apply_along_axis(lambda row: list[','.join(map(str, row))], axis = 1, arr= x)
+     
                join = np.array (list(map('_'.join, x)))
-               print ("join shape: ", join.shape) 
                join_reshaped = join [:, np.newaxis]
-               print ("join_reshaped shape: ", join_reshaped.shape) 
+  
                return join_reshaped
           
           out_chunk = (row_chunk, 1)
           
           cartesian_strings = da.map_blocks (join_mapper, cartesians, dtype = object, chunks=  out_chunk)
-          print ("cartesian_strings chunk:  ", cartesian_strings.chunks) 
-          print("cartesian_strings  type: ", type(cartesian_strings)) 
-          print("cartesian_strings elements  type: ", cartesian_strings.dtype)  
-          # print ("cartesian_strings  shape: ", cartesian_strings.compute().shape)
           
           return cartesian_strings
           
@@ -464,27 +391,21 @@ def combinatorial_header(descriptors_file_path, concentrations_file_path):
       
       # Scatter the large cartesian product array
       cartesian_header_future = client.scatter(cartesian_header_descriptors)     
-      # print ("cartesian_header_descriptors shape: ", cartesian_header_future.result().shape ) 
+ 
        
       #  Call join_elements  to  cartesian_header_future   distributedely 
       cartesian_header_strings_future = client.submit (join_elements, cartesian_header_future)
-      print ("cartesian_header_strings type: ", type(cartesian_header_strings_future))          
+        
       
       # Convert the future object to a local Dask arrays
       cartesian_header= client.gather(cartesian_header_strings_future)
-      print("cartesian_header content ", cartesian_header) 
-      print ("cartesian_header type: ", type(cartesian_header))      
-      print ("cartesian_header shape: ", cartesian_header.shape)  
-      print("cartesian_header chunks: ", cartesian_header.chunks)
       
 
       cartesian_header = da.transpose (cartesian_header)
-      print ("cartesian_header.T type: ", type(cartesian_header))  
-      print ("cartesian_header.T shape: ", cartesian_header.shape)
+
        
       cartesian_header = cartesian_header.compute()
-      print ("cartesian_header 2 type: ", type(cartesian_header))  
-      print ("cartesian_header 2 shape: ", cartesian_header.shape)     
+  
                
       return cartesian_header
  
@@ -493,8 +414,6 @@ def combinatorial_header(descriptors_file_path, concentrations_file_path):
 # Function gets the dask array table and output path and write dask array to csv and returns file path dictionaty    
 def write_to_csv(table_arr, output_path):
     
-    print ("table_arr  type: ", type(table_arr))   
-    print ("table_arr shape : ", table_arr.shape) 
     
     # Convert the numpy array to pandas dataframe
     table_df = pd.DataFrame(table_arr)
@@ -514,10 +433,7 @@ def write_to_csv(table_arr, output_path):
        table_df.to_csv(file_path, sep = ',', header =False, index = False ) 
 
        file_path_dict = {'combinatorial': file_path}
-       print("CSV file written successfully.")
-       print ("CSV file size is  " , os.path.getsize(file_path))
-       print ("CSV file column number is  " , table_df.shape[1])
-       print ("file_path_dictionary is  " , file_path_dict)
+
        return file_path 
    
     except Exception as e:
@@ -530,43 +446,32 @@ def get_result(descriptors_file_path,concentrations_file_path, output_path ,thre
     num_mixtures = get_num_mixtures(concentrations_file_path)
      
     descriptor_name = combinatorial_header(descriptors_file_path , concentrations_file_path  )
-    print("descriptor_name  type:", type (descriptor_name))         
-    print("descriptor_name shape ", descriptor_name.shape)     
+   
     
     mixture_names = get_first_column(concentrations_file_path).astype('object') 
-    print("mixture_names  type:", type (mixture_names))      
-    print("mixture_names  shape:",  mixture_names.shape)
+
     
     # transpose mixture_names to (-1, 1) 
     mixture_names = np.transpose (mixture_names) 
-    print("mixture_names  type:", type (mixture_names))
-    print("mixture_name content", mixture_names)    
+  
     
     
     result = generate_combinatorial(descriptors_file_path, concentrations_file_path).astype(np.dtype('float32') ) 
-    print("result 1  type:", type (result))
-    print("result 1 shape ", result.shape)  
-    print("result 1 computed element type:", result.dtype) 
+
     
     
     result = result.reshape( num_mixtures, -1 )
-    print("result 2 shape ", result.shape)  
-    # print("Result 2 chunks: ", result.chunks)
+
     
     result = result.astype('object')
-    print("result 3 shape ", result.shape)  
-    print("result 3 computed element type:", result.dtype)  
+ 
 
 
     concatenated = np.vstack((descriptor_name, result)) 
     
-    print("concatenated  type:", type (concatenated))
-    print("concatenated shape", concatenated.shape)
     
     concatenated_arr = np.hstack ((mixture_names, concatenated))
-    
-    print("concatenated_arr  type:", type (concatenated_arr))
-    print("concatenated_arr shape", concatenated_arr.shape)         
+         
     
     # Filter mixture descriptores columns for near constant , and low pair correlation 
     filtered_constant_arr =  filter_const (concatenated_arr, threshold_const)
@@ -596,30 +501,21 @@ def filter_const (combinatorial_descriptors_arr, threshold):
     
     # Callcompute_correlation the scattered Dask array
     column_variance_future = client.submit(compute_correlation, future_combinatorial_descriptors)
-    print("column_variance_future type ", type(column_variance_future))
-    print("column_variance_future ", column_variance_future)  
+
     
     column_variance = client.gather(column_variance_future)
-    print("column_variance  gather shape ", column_variance.shape) 
-    print("column_variance gather type  ", type(column_variance)  )
-    
+   
     column_variance = column_variance.compute() 
-    print("column_variance  computed  shape ", column_variance.shape) 
-    print("column_variance computed type  ", type(column_variance)  )
+  
     
     column_to_keep = column_variance > threshold
-    print("column_to_keep variance  shape ", column_to_keep.shape) 
-    print("column_to_keep variance  type  ", type(column_to_keep))
-    print("column_to_keep variance  elements type  ", column_to_keep.dtype)
+   
     
     column_to_keep = np.insert(column_to_keep, 0, True)
-    print("column_to_keep  shape ", column_to_keep.shape) 
-    print("column_to_keep type  ", type(column_to_keep))
+   
     
     filtered_constants_arr = combinatorial_descriptors_arr[: , column_to_keep]
-    print("filtered_constants_arr shape ", filtered_constants_arr.shape) 
-    print("filtered_constants_arr type  ", type(filtered_constants_arr)  )
-    print ("filtered_constants_arr column number is " , filtered_constants_arr.shape[1])
+
     
     return filtered_constants_arr
            
@@ -645,13 +541,12 @@ def filter_high_corr_bychunck(combinatorial_descriptors_arr, threshold, batch_nu
         return keep_cols       
     
     combinatorial_descriptors = combinatorial_descriptors_arr [1: , 1: ].astype(float)  
-    print("combinatorial_descriptors 1 type ", type(combinatorial_descriptors))  
-    print("combinatorial_descriptors 1 shape ", combinatorial_descriptors.shape)
+   
     
     num_mixture = combinatorial_descriptors.shape[0]
-    print("num_mixture  ", num_mixture)
+ 
     mix_descriptors = combinatorial_descriptors.shape[1]
-    print("mix_descriptors  ", mix_descriptors)
+ 
    
     columns_to_keep_result = []
     
@@ -665,38 +560,30 @@ def filter_high_corr_bychunck(combinatorial_descriptors_arr, threshold, batch_nu
         batch = combinatorial_descriptors [:, start: end]  
         
         keep_col = highly_correlated_columns (batch, threshold_corr)
-        print("keep_col  type ", type(keep_col)  )
-        print("keep_col set  length  ", len(keep_col) )
+   
         
         keep_col = np.array(list(keep_col))
-        print("keep_col  type ", type(keep_col)  )
-        print("keep_col  elements type ", keep_col.dtype  )
+      
         keep_col += start
         columns_to_keep_result.append ( keep_col.tolist() )
-        print("columns_to_keep_result  type ", type(columns_to_keep_result)  )
-        print("columns_to_keep_result  length  ", len(columns_to_keep_result)  )
+    
         
     
     if len(columns_to_keep_result) > 0:        
         
         columns_to_keep = np.concatenate(columns_to_keep_result) 
-        print("columns_to_keep  type ", type(columns_to_keep)  )
-        print("columns_to_keep elements type ", columns_to_keep.dtype)
-        print("columns_to_keep  length ", len(columns_to_keep))
-        print("columns_to_keep  shape ", columns_to_keep.shape)
+
         
         
         columns_to_keep += 1
-        print("columns_to_keep type ", type(columns_to_keep)) 
-        print("columns_to_keep shape ", len(columns_to_keep))  
-        print("columns_to_keep elements  type: ", columns_to_keep.dtype) 
+    
         
         matrix_high_corr = combinatorial_descriptors_arr [:, columns_to_keep ] 
 
     else: 
         
         columns_to_keep = np.array([], dtype = bool)
-        print("columns_to_keep is empty") 
+     
         matrix_high_corr = combinatorial_descriptors_arr 
 
      
