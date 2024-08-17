@@ -461,7 +461,7 @@ def get_result(descriptors_file_path,concentrations_file_path, output_path ,thre
   
     
     
-    result = generate_combinatorial(descriptors_file_path, concentrations_file_path).astype(np.dtype('float32'), client ) 
+    result = generate_combinatorial(descriptors_file_path, concentrations_file_path, client).astype(np.dtype('float32')) 
 
     
     
