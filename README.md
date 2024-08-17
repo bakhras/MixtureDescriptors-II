@@ -55,7 +55,19 @@ After installing the package, you can use it in your Python code. Here’s a bas
 
 ```python
 
-from combinatorixPy import get_result
+from combinatorixPy import initialize_dask_cluster, get_result
+# initialize the cluster
+config = {
+        'n_workers': 3,
+        'threads_per_worker': 100,
+        'memory_limit': '400GB',
+        'timeout': 300
+    }
+    
+    
+    # Initialize the Dask client with the provided config
+    cluster = initialize_dask_cluster(config)
+    client = Client(cluster)
 
 # Call the function
 get_result(
