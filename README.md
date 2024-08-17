@@ -65,7 +65,7 @@ config = {
     }
     
     
-    # Initialize the Dask client with the provided config
+    # Initialize the Dask clientdask_cluster with the provided config
     cluster = initialize_dask_cluster(config)
     client = Client(cluster)
 
@@ -80,7 +80,7 @@ get_result(
     client
 )
 ```
-Or
+OR
 
 ```python
 # Configuration for connecting to an existing scheduler
@@ -106,15 +106,16 @@ get_result(
 ```
 
 ## Arguments
-After installation, you can use the package's functions in your Python code. The main function get_result requires six arguments:
+After installation, you can use the package's functions in your Python code. The main function get_result requires seven arguments:
 descriptors_file_path: Path to the CSV file containing individual descriptors for each component.
 mole_fraction_file_path: Path to the CSV file with mole fraction values for each component in each mixture.
 output_directory: Directory path where the resulting CSV file will be saved.
 constant_threshold: Threshold for filtering out constant and nearly constant descriptors.
 correlation_threshold: Threshold for removing highly correlated descriptor pairs.
 batch_number: Batch number for processing highly correlated pairs due to large correlation matrices.
+client: An instance of a dask.distributed.Client
 
-After installation, you can use the package's functions in your Python code. The main function get_result requires six arguments:
+After installation, you can use the package's functions in your Python code. The main function get_result requires seven arguments:
 
 ## Contributing
 Contributions are welcome! Please open an issue or submit a pull request if you have suggestions or improvements.
