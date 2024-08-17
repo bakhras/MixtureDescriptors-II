@@ -592,7 +592,7 @@ def filter_high_corr_bychunck(combinatorial_descriptors_arr, threshold_corr, bat
      
     return matrix_high_corr
 
-def dask_cluster(config=None):
+def initialize_dask_cluster(config=None):
     """
     Initializes and returns a Dask LocalCluster based on the provided configuration.
     

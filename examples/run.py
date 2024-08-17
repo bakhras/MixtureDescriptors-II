@@ -29,7 +29,7 @@ if __name__ == '__main__':
     batch_num = 100000
     
     
-    result_path = get_result(descriptors_file_path, concentrations_file_path, output_path, threshold_const, threshold_corr, batch_num )  
+    result_path = get_result(descriptors_file_path, concentrations_file_path, output_path, threshold_const, threshold_corr, batch_num, client)  
     print  ("result path", result_path)
     
     client.close()

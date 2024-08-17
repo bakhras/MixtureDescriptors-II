@@ -76,7 +76,8 @@ get_result(
     output_directory='path/to/output',
     constant_threshold=0.01,
     correlation_threshold=0.9,
-    batch_number=100000
+    batch_number=100000, 
+    client
 )
 ```
 Or
@@ -97,7 +98,8 @@ get_result(
     output_directory='path/to/output',
     constant_threshold=0.01,
     correlation_threshold=0.9,
-    batch_number=100000
+    batch_number=100000, 
+    client
 )
 
 
