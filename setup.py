@@ -6,7 +6,7 @@ with open ('README.md', 'r' )   as f:
 
 setup(
     name='combinatorixPy',
-    version='1.0.4',
+    version='1.0.41.0.5',
     packages=find_packages( where = "src"),
     package_dir={'': 'src'},
     description='Development of Numerical Features/Descriptors to Describe Complex Materials for Machine Learning Modeling',

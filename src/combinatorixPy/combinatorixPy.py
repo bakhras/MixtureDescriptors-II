@@ -1,5 +1,12 @@
 # -*- coding: utf-8 -*-
 """
+Created on Fri Aug 16 21:20:31 2024
+
+@author: RASULEVLAB
+"""
+
+# -*- coding: utf-8 -*-
+"""
 Created on Tue Oct 10 19:07:52 2023
 
 @author: RASULEVLAB
@@ -10,7 +17,7 @@ import os
 import pandas as pd
 import numpy as np
 import dask.array as da
-from dask.distributed import Client, LocalCluster, Worker
+from dask.distributed import Client, LocalCluster
 import itertools
 from time import sleep
 
@@ -234,7 +241,7 @@ def get_num_descritors(descriptors_file_path):
 
 
         
-def generate_combinatorial(descriptors_file_path, concentrations_file_path):    
+def generate_combinatorial(descriptors_file_path, concentrations_file_path, client):    
     
    # load lazy descriptors to memory 
    descriptors =  generate_descriptors_based_nonzero_component (descriptors_file_path, concentrations_file_path )  
@@ -340,7 +347,7 @@ def generate_combinatorial(descriptors_file_path, concentrations_file_path):
 
 
 # Return the combination of the descriptors'name as header
-def combinatorial_header(descriptors_file_path, concentrations_file_path):
+def combinatorial_header(descriptors_file_path, concentrations_file_path, client):
     
       header_descriptor = get_descriptor_header(descriptors_file_path, concentrations_file_path)
       
@@ -432,8 +439,6 @@ def write_to_csv(table_arr, output_path):
                 
        table_df.to_csv(file_path, sep = ',', header =False, index = False ) 
 
-       file_path_dict = {'combinatorial': file_path}
-
        return file_path 
    
     except Exception as e:
@@ -441,11 +446,11 @@ def write_to_csv(table_arr, output_path):
        
        
 # Function gets the descriptors and concentrations and output the result of mixture descriptors concatenated with the header mixture name and first column mixture descriptors names 
-def get_result(descriptors_file_path,concentrations_file_path, output_path ,threshold_const, threshold_corr, batch_num):
+def get_result(descriptors_file_path,concentrations_file_path, output_path ,threshold_const, threshold_corr, batch_num, client):
     
     num_mixtures = get_num_mixtures(concentrations_file_path)
      
-    descriptor_name = combinatorial_header(descriptors_file_path , concentrations_file_path  )
+    descriptor_name = combinatorial_header(descriptors_file_path , concentrations_file_path, client  )
    
     
     mixture_names = get_first_column(concentrations_file_path).astype('object') 
@@ -456,7 +461,7 @@ def get_result(descriptors_file_path,concentrations_file_path, output_path ,thre
   
     
     
-    result = generate_combinatorial(descriptors_file_path, concentrations_file_path).astype(np.dtype('float32') ) 
+    result = generate_combinatorial(descriptors_file_path, concentrations_file_path).astype(np.dtype('float32'), client ) 
 
     
     
@@ -474,7 +479,7 @@ def get_result(descriptors_file_path,concentrations_file_path, output_path ,thre
          
     
     # Filter mixture descriptores columns for near constant , and low pair correlation 
-    filtered_constant_arr =  filter_const (concatenated_arr, threshold_const)
+    filtered_constant_arr =  filter_const (concatenated_arr, threshold_const, client)
     filtered_highly_corr_arr = filter_high_corr_bychunck (filtered_constant_arr, threshold_corr, batch_num)
     
     # Write the dask array to csv file
@@ -485,7 +490,7 @@ def get_result(descriptors_file_path,concentrations_file_path, output_path ,thre
         
  
 # Remove constant and near constant combbinatorial_descriptors columns from dask array resulted from generate_combinatorial function 
-def filter_const (combinatorial_descriptors_arr, threshold):
+def filter_const (combinatorial_descriptors_arr, threshold, client):
     
     # Calculate the variance of each columns
     def compute_correlation(dask_array):
@@ -521,7 +526,7 @@ def filter_const (combinatorial_descriptors_arr, threshold):
            
 
        
-def filter_high_corr_bychunck(combinatorial_descriptors_arr, threshold, batch_num):
+def filter_high_corr_bychunck(combinatorial_descriptors_arr, threshold_corr, batch_num):
         
     def highly_correlated_columns(x, threshold):
         
@@ -542,8 +547,6 @@ def filter_high_corr_bychunck(combinatorial_descriptors_arr, threshold, batch_nu
     
     combinatorial_descriptors = combinatorial_descriptors_arr [1: , 1: ].astype(float)  
    
-    
-    num_mixture = combinatorial_descriptors.shape[0]
  
     mix_descriptors = combinatorial_descriptors.shape[1]
  
@@ -589,7 +592,7 @@ def filter_high_corr_bychunck(combinatorial_descriptors_arr, threshold, batch_nu
      
     return matrix_high_corr
 
-def initialize_dask_cluster(config=None):
+def dask_cluster(config=None):
     """
     Initializes and returns a Dask LocalCluster based on the provided configuration.
     

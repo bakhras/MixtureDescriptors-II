@@ -55,8 +55,8 @@ After installing the package, you can use it in your Python code. Here’s a bas
 
 ```python
 
-from combinatorixPy import initialize_dask_cluster, get_result
-# initialize the cluster
+from combinatorixPy import initialize_dask_cluster, Usageget_result
+# initialize the cluster 
 config = {
         'n_workers': 3,
         'threads_per_worker': 100,
@@ -78,6 +78,29 @@ get_result(
     correlation_threshold=0.9,
     batch_number=100000
 )
+```
+Or
+
+```python
+# Configuration for connecting to an existing scheduler
+config = {
+    'scheduler_address': 'tcp://localhost:8786'  # Replace with your scheduler's address
+}
+# Initialize the Dask client with the provided config
+    cluster = initialize_dask_cluster(config)
+    client = Client(cluster)
+
+# Call the function
+get_result(
+    descriptors_file_path='path/to/descriptors.csv',
+    mole_fraction_file_path='path/to/mole_fractions.csv',
+    output_directory='path/to/output',
+    constant_threshold=0.01,
+    correlation_threshold=0.9,
+    batch_number=100000
+)
+
+
 ```
 
 ## Arguments
