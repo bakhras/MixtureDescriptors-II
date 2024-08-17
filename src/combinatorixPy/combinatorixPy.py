@@ -589,3 +589,42 @@ def filter_high_corr_bychunck(combinatorial_descriptors_arr, threshold, batch_nu
      
     return matrix_high_corr
 
+def initialize_dask_cluster(config=None):
+    """
+    Initializes and returns a Dask LocalCluster based on the provided configuration.
+    
+    Parameters:
+    - config (dict): Configuration dictionary for Dask LocalCluster. Expected keys:
+        - scheduler_address (str): Address of the Dask scheduler. If provided, connects to the existing scheduler.
+        - n_workers (int): Number of workers to use (only if creating a LocalCluster).
+        - threads_per_worker (int): Number of threads per worker (only if creating a LocalCluster).
+        - memory_limit (str): Memory limit per worker (only if creating a LocalCluster).
+        - Additional keyword arguments for LocalCluster.
+    
+    Returns:
+    - LocalCluster: A Dask LocalCluster instance or a connection to an existing scheduler.
+    """
+    if config is None:
+        config = {}
+    
+    scheduler_address = config.get('scheduler_address', None)
+    n_workers = config.get('n_workers', 1)
+    threads_per_worker = config.get('threads_per_worker', 1)
+    memory_limit = config.get('memory_limit', '2GB')
+    timeout = config.get('timeout' , 300)
+    
+    if scheduler_address:
+        # Connect to an existing Dask scheduler
+        cluster = Client(scheduler_address).cluster
+    else:
+        # Create a LocalCluster
+        cluster = LocalCluster(
+            n_workers=n_workers, 
+            threads_per_worker=threads_per_worker, 
+            memory_limit=memory_limit,
+            timeout= timeout
+            
+        )
+    
+    return cluster
+
