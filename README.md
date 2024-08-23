@@ -58,14 +58,14 @@ After installing the package, you can use it in your Python code. Here’s a bas
 from combinatorixPy import initialize_dask_cluster, Usageget_result
 # initialize the cluster 
 config = {
-        'n_workers': 3,
-        'threads_per_worker': 100,
-        'memory_limit': '400GB',
+        'n_workers': 1,
+        'threads_per_worker': 30,
+        'memory_limit': '100GB',
         'timeout': 300
     }
     
     
-    # Initialize the Dask clientdask_cluster with the provided config
+    # Initialize the Dask client, dask_cluster with the provided config
     cluster = initialize_dask_cluster(config)
     client = Client(cluster)
 
@@ -83,6 +83,7 @@ get_result(
 OR
 
 ```python
+from combinatorixPy import initialize_dask_cluster, Usageget_result
 # Configuration for connecting to an existing scheduler
 config = {
     'scheduler_address': 'tcp://localhost:8786'  # Replace with your scheduler's address
@@ -106,19 +107,15 @@ get_result(
 ```
 
 ## Arguments
-After installation, you can use the package's functions in your Python code. The main function get_result requires seven arguments:
-descriptors_file_path: Path to the CSV file containing individual descriptors for each component.
-mole_fraction_file_path: Path to the CSV file with mole fraction values for each component in each mixture.
-output_directory: Directory path where the resulting CSV file will be saved.
-constant_threshold: Threshold for filtering out constant and nearly constant descriptors.
-correlation_threshold: Threshold for removing highly correlated descriptor pairs.
-batch_number: Batch number for processing highly correlated pairs due to large correlation matrices.
-client: An instance of a dask.distributed.Client
+After installation, you can use the package's functions in your Python code. The main function get_result requires seven arguments:  
+descriptors_file_path: Path to the CSV file containing individual descriptors for each component.  
+mole_fraction_file_path: Path to the CSV file with mole fraction values for each component in each mixture.  
+output_directory: Directory path where the resulting CSV file will be saved.  
+constant_threshold: Threshold for filtering out constant and nearly constant descriptors.  
+correlation_threshold: Threshold for removing highly correlated descriptor pairs.  
+batch_number: Batch number for processing highly correlated pairs due to large correlation matrices.  
+client: An instance of a dask.distributed.Client  
 
-After installation, you can use the package's functions in your Python code. The main function get_result requires seven arguments:
-
-## Contributing
-Contributions are welcome! Please open an issue or submit a pull request if you have suggestions or improvements.
    
 ## License
 This project is licensed under the GNU General Public License - see the LICENSE file for details.

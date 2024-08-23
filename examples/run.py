@@ -6,9 +6,9 @@ if __name__ == '__main__':
     
      # User-defined configuration
     config = {
-        'n_workers': 3,
-        'threads_per_worker': 100,
-        'memory_limit': '400GB',
+        'n_workers': 1,
+        'threads_per_worker': 30,
+        'memory_limit': '100GB',
         'timeout': 300
     }
     

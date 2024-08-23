@@ -602,7 +602,7 @@ def initialize_dask_cluster(config=None):
         - n_workers (int): Number of workers to use (only if creating a LocalCluster).
         - threads_per_worker (int): Number of threads per worker (only if creating a LocalCluster).
         - memory_limit (str): Memory limit per worker (only if creating a LocalCluster).
-        - Additional keyword arguments for LocalCluster.
+        - timeout (int): The amount of time (in seconds) that Dask will wait for the workers to start up and connect to the scheduler before raising an error.
     
     Returns:
     - LocalCluster: A Dask LocalCluster instance or a connection to an existing scheduler.
@@ -625,8 +625,7 @@ def initialize_dask_cluster(config=None):
             n_workers=n_workers, 
             threads_per_worker=threads_per_worker, 
             memory_limit=memory_limit,
-            timeout= timeout
-            
+            timeout= timeout            
         )
     
     return cluster
