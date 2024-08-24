@@ -108,13 +108,13 @@ get_result(
 
 ## Arguments
 After installation, you can use the package's functions in your Python code. The main function get_result requires seven arguments:  
-descriptors_file_path: Path to the CSV file containing individual descriptors for each component.  
-mole_fraction_file_path: Path to the CSV file with mole fraction values for each component in each mixture.  
-output_directory: Directory path where the resulting CSV file will be saved.  
-constant_threshold: Threshold for filtering out constant and nearly constant descriptors.  
-correlation_threshold: Threshold for removing highly correlated descriptor pairs.  
-batch_number: Batch number for processing highly correlated pairs due to large correlation matrices.  
-client: An instance of a dask.distributed.Client  
+1- descriptors_file_path: Path to the CSV file containing individual descriptors for each component.  
+2- mole_fraction_file_path: Path to the CSV file with mole fraction values for each component in each mixture.  
+3- output_directory: Directory path where the resulting CSV file will be saved.  
+4- constant_threshold: Threshold for filtering out constant and nearly constant descriptors.  
+5- correlation_threshold: Threshold for removing highly correlated descriptor pairs.  
+6- batch_number: Batch number for processing highly correlated pairs due to large correlation matrices.  
+7- client: An instance of a dask.distributed.Client  
 
    
 ## License
