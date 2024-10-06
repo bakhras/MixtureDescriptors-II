@@ -27,7 +27,7 @@ setup(
         'Programming Language :: Python :: 3.10',
     ],
 
-    python_requires='>=3.6',
+    python_requires='=3.10',
     install_requires = [
         # List your project's dependencies here.
         # They will be installed by pip when your project is installed.
