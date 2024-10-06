@@ -42,10 +42,10 @@ Option 1: Install from Local Directory
       pip install .
       ```
 Option 2: Install from PyPI
-If you prefer to install the package directly from PyPI https://pypi.org/project/combinatorixPy/1.0.1/. You can use the following command, Be sure to replace 1.0.1 with the latest version number as updates become available:  
+If you prefer to install the package directly from PyPI https://pypi.org/project/combinatorixPy/. You can use the following command, Be sure to replace 1.0.1 with the latest version number as updates become available:  
 
    ```bash
-   pip install combinatorixPy==1.1.0
+   pip install combinatorixPy
    ```
 
 ## Usage
