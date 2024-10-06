@@ -315,14 +315,7 @@ def generate_combinatorial(descriptors_file_path, concentrations_file_path, clie
                                                     
    # Call the cartesian product function 
    cartesian_descriptors = [cartesian_product(subarray) for subarray in descriptors]
-
    
-
-
-   client.cluster.scale(20)
-         
-   sleep(5)
-     
    
    # Scatter the large cartesian product list array
    cartesian_future = client.scatter(cartesian_descriptors)
