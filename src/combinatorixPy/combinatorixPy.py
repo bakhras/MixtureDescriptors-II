@@ -375,7 +375,7 @@ def combinatorial_header(descriptors_file_path, concentrations_file_path, client
           
           def join_mapper(x):
      
-               join = np.array (list(map('_'.join, x)))
+               join = np.array (list(map('-'.join, x)))
                join_reshaped = join [:, np.newaxis]
   
                return join_reshaped
