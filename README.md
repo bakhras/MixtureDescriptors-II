@@ -1,4 +1,4 @@
-# combinatorixPy: Mixture Descriptors Calculator
+#CombinatorixPy: Mixture Descriptors Calculator
 This Python project calculates an combinatorial scheme for mixture descriptors of multi-component materials. The algorithm processes input from two `.csv` files and computes combinatorial mixture descriptors. This code computes combinatorial mixture descriptors based on cartesian product which is cartesian product of N sets of $D_1 \times D_2 \times \dots \times D_N$ belonging to constituents' descriptors of each mixture, while N is the number of components.
 
 
